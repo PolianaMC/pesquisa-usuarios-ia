@@ -1,0 +1,441 @@
+/**
+ * questions.js — Modelo de dados do questionário V3.
+ *
+ * FONTE DE VERDADE: 02_QUESTIONARIO/QUESTIONARIO_MASTER.md (texto),
+ * QUESTIONARIO_VARIAVEIS.md (tipos/branching/randomização) e CODEBOOK.md (códigos).
+ *
+ * Nada neste arquivo deve divergir desses três documentos. Qualquer alteração de
+ * conteúdo (redação, opções, branching, variáveis) deve ser feita primeiro nos
+ * documentos operacionais e só depois refletida aqui — nunca o inverso.
+ */
+
+const CONSENT_INTRO = `Estamos realizando uma pesquisa acadêmica para compreender como as pessoas utilizam ferramentas de inteligência artificial (como ChatGPT, Gemini, Claude e outras) e como interagem com as respostas geradas por esses sistemas no dia a dia.
+
+Não existem respostas certas ou erradas — queremos entender sua experiência real de uso.
+
+A participação é voluntária, leva cerca de 10 minutos, e você pode parar a qualquer momento sem nenhuma consequência. Não pedimos nome, e-mail ou qualquer dado que possa te identificar. Suas respostas são anônimas e serão usadas apenas para fins acadêmicas, em um Projeto de Conclusão de Curso em Design.
+
+É necessário ter 18 anos ou mais e já ter utilizado alguma ferramenta de IA generativa para participar.`;
+
+const BLOCKS = [
+  {
+    id: "bloco0",
+    title: "Apresentação e consentimento",
+    intro: CONSENT_INTRO,
+    questions: [
+      {
+        id: "Q00",
+        variable: "consentimento",
+        type: "consent",
+        text: "Li as informações acima, tenho 18 anos ou mais, já utilizei alguma ferramenta de IA generativa, e concordo em participar voluntariamente desta pesquisa.",
+        required: true,
+      },
+    ],
+  },
+  {
+    id: "bloco1",
+    title: "Perfil do participante",
+    questions: [
+      {
+        id: "Q01",
+        variable: "faixa_etaria",
+        type: "single",
+        text: "Qual é a sua faixa etária?",
+        required: true,
+        options: [
+          { value: "18-24", label: "18–24" },
+          { value: "25-34", label: "25–34" },
+          { value: "35-44", label: "35–44" },
+          { value: "45-54", label: "45–54" },
+          { value: "55-64", label: "55–64" },
+          { value: "65+", label: "65 ou mais" },
+          { value: "nao_informado", label: "Prefiro não responder" },
+        ],
+      },
+      {
+        id: "Q02",
+        variable: "situacao_atual",
+        type: "single",
+        text: "Qual dessas opções descreve melhor sua situação atual?",
+        required: true,
+        otherVariable: "situacao_atual_outro",
+        options: [
+          { value: "estudante", label: "Estudante" },
+          { value: "profissional", label: "Profissional atuante" },
+          { value: "estudante_trabalha", label: "Estudante que também trabalha" },
+          { value: "buscando_trabalho", label: "Buscando oportunidade de trabalho" },
+          { value: "outro", label: "Outra", hasOther: true },
+        ],
+      },
+      {
+        id: "Q03",
+        variable: "area_atuacao_estudo",
+        type: "text",
+        text: "Qual é a sua área de estudo ou atuação principal?",
+        hint: "Opcional, resposta curta.",
+        required: false,
+      },
+      {
+        id: "Q04",
+        variable: "experiencia_digital",
+        type: "single",
+        text: "Como você avalia sua experiência com tecnologia e ferramentas digitais em geral?",
+        required: true,
+        options: [
+          { value: 1, label: "Iniciante" },
+          { value: 2, label: "Básica" },
+          { value: 3, label: "Intermediária" },
+          { value: 4, label: "Avançada" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "bloco2",
+    title: "Frequência e contexto de uso",
+    questions: [
+      {
+        id: "Q05",
+        variable: "frequencia_uso_ia",
+        type: "single",
+        text: "Com que frequência você utiliza ferramentas de IA generativa (como chatbots de texto, assistentes de IA, geradores de imagem)?",
+        required: true,
+        options: [
+          { value: 6, label: "Várias vezes ao dia" },
+          { value: 5, label: "Uma vez ao dia" },
+          { value: 4, label: "Algumas vezes por semana" },
+          { value: 3, label: "Cerca de uma vez por semana" },
+          { value: 2, label: "Algumas vezes por mês" },
+          { value: 1, label: "Raramente" },
+        ],
+      },
+      {
+        id: "Q06",
+        variable: "contexto_uso",
+        type: "multi",
+        text: "Em quais contextos você utiliza essas ferramentas?",
+        hint: "Pode marcar mais de uma.",
+        required: true,
+        minSelect: 1,
+        otherVariable: "contexto_uso_outro",
+        options: [
+          { value: "pessoal", label: "No dia a dia pessoal" },
+          { value: "estudos", label: "Nos estudos" },
+          { value: "trabalho", label: "No trabalho" },
+          { value: "outro", label: "Outro", hasOther: true },
+        ],
+      },
+      {
+        id: "Q07",
+        variable: "dispositivo_principal",
+        type: "single",
+        text: "Em qual dispositivo você mais utiliza IA generativa?",
+        required: true,
+        options: [
+          { value: "celular", label: "Celular" },
+          { value: "computador", label: "Computador" },
+          { value: "tablet", label: "Tablet" },
+          { value: "variado", label: "Varia bastante, sem um predominante" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "bloco3",
+    title: "Ferramentas de IA utilizadas",
+    questions: [
+      {
+        id: "Q08",
+        variable: "ferramenta_espontanea",
+        type: "text",
+        text: "Pensando agora, qual foi a primeira ferramenta de IA que veio à sua mente?",
+        required: true,
+      },
+      {
+        id: "Q09",
+        variable: "ferramentas_reconhecidas",
+        type: "multi",
+        text: "Das ferramentas abaixo, quais você já utilizou pelo menos uma vez?",
+        hint: "Pode marcar mais de uma.",
+        required: true,
+        minSelect: 1,
+        randomize: true,
+        otherVariable: "ferramentas_reconhecidas_outra",
+        options: [
+          { value: "chatgpt", label: "ChatGPT" },
+          { value: "gemini", label: "Google Gemini" },
+          { value: "claude", label: "Claude" },
+          { value: "copilot", label: "Microsoft Copilot" },
+          { value: "perplexity", label: "Perplexity" },
+          { value: "meta_ai", label: "Meta AI" },
+          { value: "grok", label: "Grok" },
+          { value: "deepseek", label: "DeepSeek" },
+          { value: "outra", label: "Outra", hasOther: true },
+        ],
+      },
+      {
+        id: "Q10",
+        variable: "ferramenta_principal",
+        type: "dynamic-single",
+        text: "Dentre as que você já utilizou, qual é a que você mais usa atualmente?",
+        required: true,
+        sourceQuestion: "Q09",
+      },
+      {
+        id: "Q11",
+        variable: "ferramenta_secundaria",
+        type: "dynamic-single",
+        text: "Existe uma segunda ferramenta que você usa com frequência considerável?",
+        required: true,
+        sourceQuestion: "Q09",
+        excludeQuestion: "Q10",
+        minSourceSelections: 2,
+        extraOption: { value: "nenhuma", label: "Não, uso praticamente só uma ferramenta principal" },
+      },
+    ],
+  },
+  {
+    id: "bloco4",
+    title: "Atividades e finalidades de uso",
+    questions: [
+      {
+        id: "Q12",
+        variable: "atividades_uso",
+        type: "multi",
+        text: "Para quais atividades você costuma utilizar IA generativa?",
+        hint: "Pode marcar mais de uma.",
+        required: true,
+        minSelect: 1,
+        randomize: true,
+        otherVariable: "atividades_uso_outro",
+        options: [
+          { value: "pesquisar", label: "Pesquisar ou buscar informações" },
+          { value: "escrever", label: "Escrever ou revisar textos" },
+          { value: "estudar", label: "Estudar ou aprender sobre um assunto" },
+          { value: "programar", label: "Programar ou tarefas técnicas" },
+          { value: "criar_midia", label: "Criar imagens, vídeos ou áudio" },
+          { value: "organizar_tarefas", label: "Organizar tarefas do dia a dia" },
+          { value: "decisoes_pessoais", label: "Tomar decisões pessoais (ex.: o que comprar, para onde viajar)" },
+          { value: "conversar", label: "Conversar ou como companhia" },
+          { value: "trabalho_especifico", label: "Uma necessidade específica do meu trabalho" },
+          { value: "outro", label: "Outro", hasOther: true },
+        ],
+      },
+      {
+        id: "Q13",
+        variable: "atividade_principal",
+        type: "dynamic-single",
+        text: "Dentre essas atividades, qual ocupa mais o seu tempo de uso de IA?",
+        required: true,
+        sourceQuestion: "Q12",
+        autoFillIfSingle: true,
+      },
+    ],
+  },
+  {
+    id: "bloco5",
+    title: "Comportamento diante de respostas longas e localização de informação",
+    questions: [
+      {
+        id: "Q14",
+        variable: "comportamento_resposta_longa",
+        type: "multi",
+        text: "Quando uma resposta de IA é mais longa ou detalhada do que você esperava, o que você costuma fazer?",
+        hint: "Pode marcar mais de uma.",
+        required: true,
+        minSelect: 1,
+        exclusiveValue: "nao_acontece",
+        otherVariable: "comportamento_resposta_longa_outro",
+        options: [
+          { value: "le_tudo", label: "Leio a resposta inteira" },
+          { value: "pede_resumo_reformulacao", label: "Peço para a IA resumir, encurtar ou reformular a resposta" },
+          { value: "pergunta_especifica", label: "Faço uma nova pergunta mais específica" },
+          { value: "abandona", label: "Paro de ler e não uso aquela resposta" },
+          { value: "busca_outra_fonte", label: "Procuro a informação em outro lugar" },
+          { value: "nao_acontece", label: "Isso raramente ou nunca acontece comigo — as respostas que recebo costumam ter o tamanho que eu espero" },
+          { value: "outro", label: "Outro", hasOther: true },
+        ],
+      },
+      {
+        id: "Q15",
+        variable: "estrategia_localizacao",
+        type: "multi",
+        text: "Quando você quer encontrar rapidamente uma parte específica de uma resposta de IA, o que você costuma fazer?",
+        hint: "Pode marcar mais de uma.",
+        required: true,
+        minSelect: 1,
+        otherVariable: "estrategia_localizacao_outro",
+        options: [
+          { value: "le_inicio_relevante", label: "Leio só o início ou a parte que parece mais relevante" },
+          { value: "palavras_chave", label: "Procuro palavras-chave" },
+          { value: "titulos_topicos", label: "Procuro títulos ou tópicos em destaque" },
+          { value: "busca_navegador", label: "Uso a busca do navegador/app (Ctrl+F)" },
+          { value: "rolagem_rapida", label: "Rolo rapidamente até algo chamar minha atenção" },
+          { value: "pede_para_ia_apontar", label: "Peço para a própria IA apontar o principal" },
+          { value: "le_tudo_sem_estrategia", label: "Costumo ler tudo, do início ao fim, sem uma estratégia específica de busca" },
+          { value: "outro", label: "Outro", hasOther: true },
+        ],
+      },
+    ],
+  },
+  {
+    id: "bloco6",
+    title: "Compreensão e verificação de informação",
+    questions: [
+      {
+        id: "Q16",
+        variable: "frequencia_releitura",
+        type: "single",
+        text: "Depois de ler uma resposta de IA, com que frequência você sente necessidade de reler para entender melhor?",
+        required: true,
+        options: [
+          { value: 1, label: "Nunca" },
+          { value: 2, label: "Raramente" },
+          { value: 3, label: "Às vezes" },
+          { value: 4, label: "Frequentemente" },
+          { value: 5, label: "Sempre" },
+        ],
+      },
+      {
+        id: "Q17",
+        variable: "estrategia_verificacao",
+        type: "multi",
+        text: "Quando uma informação de uma resposta de IA é importante para você, o que você costuma fazer?",
+        hint: "Pode marcar mais de uma.",
+        required: true,
+        minSelect: 1,
+        otherVariable: "estrategia_verificacao_outro",
+        options: [
+          { value: "sem_verificar", label: "Uso sem verificar" },
+          { value: "busca_google", label: "Verifico em um mecanismo de busca (Google e similares)" },
+          { value: "fonte_oficial", label: "Verifico em uma fonte oficial" },
+          { value: "fonte_confiavel", label: "Verifico em uma fonte que considero confiável" },
+          { value: "pergunta_de_novo_mesma_ia", label: "Pergunto novamente à mesma IA, de outra forma" },
+          { value: "compara_outra_ia", label: "Uso outra IA para comparar a resposta" },
+          { value: "pergunta_pessoa", label: "Pergunto a uma pessoa com mais conhecimento no assunto" },
+          { value: "outro", label: "Outro", hasOther: true },
+        ],
+      },
+      {
+        id: "Q18",
+        variable: "situacao_verificacao",
+        type: "multi",
+        text: "Em quais situações você costuma verificar uma informação recebida de uma IA?",
+        hint: "Pode marcar mais de uma.",
+        required: true,
+        minSelect: 1,
+        otherVariable: "situacao_verificacao_outro",
+        options: [
+          { value: "financeira", label: "Decisões financeiras" },
+          { value: "saude", label: "Questões de saúde" },
+          { value: "trabalho_estudo_avaliado", label: "Trabalhos ou estudos que serão avaliados" },
+          { value: "parece_estranho", label: "Quando a informação parece estranha ou pouco provável" },
+          { value: "informacao_nova", label: "Sempre que a informação é nova para mim" },
+          { value: "raramente_verifica", label: "Raramente verifico, independentemente da situação" },
+          { value: "outro", label: "Outro", hasOther: true },
+        ],
+      },
+    ],
+  },
+  {
+    id: "bloco7",
+    title: "Ferramentas de IA especializadas ou de nicho",
+    questions: [
+      {
+        id: "Q19",
+        variable: "usa_ferramenta_nicho",
+        type: "boolean",
+        text: "Você utiliza alguma ferramenta de IA específica para sua profissão, área de estudo ou alguma atividade particular — diferente de ferramentas de uso geral como ChatGPT?",
+        required: true,
+      },
+      {
+        id: "Q20",
+        variable: "nicho_qual",
+        type: "text",
+        text: "Qual ferramenta?",
+        required: true,
+        visibleIf: { question: "Q19", equals: true },
+      },
+      {
+        id: "Q21",
+        variable: "nicho_finalidade",
+        type: "text",
+        text: "Para que você a utiliza?",
+        required: true,
+        visibleIf: { question: "Q19", equals: true },
+      },
+      {
+        id: "Q22",
+        variable: "nicho_frequencia",
+        type: "single",
+        text: "Com que frequência você a utiliza?",
+        required: true,
+        visibleIf: { question: "Q19", equals: true },
+        options: [
+          { value: 6, label: "Várias vezes ao dia" },
+          { value: 5, label: "Uma vez ao dia" },
+          { value: 4, label: "Algumas vezes por semana" },
+          { value: 3, label: "Cerca de uma vez por semana" },
+          { value: 2, label: "Algumas vezes por mês" },
+          { value: 1, label: "Raramente" },
+        ],
+      },
+      {
+        id: "Q23",
+        variable: "nicho_motivo",
+        type: "text",
+        text: "O que essa ferramenta oferece que é útil ou específico para a atividade em que você a utiliza?",
+        required: true,
+        visibleIf: { question: "Q19", equals: true },
+      },
+    ],
+  },
+  {
+    id: "bloco8",
+    title: "Perguntas abertas",
+    questions: [
+      {
+        id: "Q24",
+        variable: "caracteristica_facilitadora_espontanea",
+        type: "textarea",
+        text: "Pense em uma resposta de IA que você considerou fácil de entender rapidamente. O que fez ela ser fácil?",
+        required: false,
+      },
+      {
+        id: "Q25",
+        variable: "relato_dificuldade_recente",
+        type: "textarea",
+        text: "Pense em uma situação recente e específica em que uma resposta de IA não ajudou como você esperava. O que aconteceu, exatamente?",
+        hint: "Opcional.",
+        required: false,
+      },
+      {
+        id: "Q26",
+        variable: "comportamento_quando_nao_funciona",
+        type: "textarea",
+        text: "De forma mais geral, quando isso acontece, o que você costuma fazer a seguir?",
+        hint: "Opcional.",
+        required: false,
+      },
+    ],
+  },
+  {
+    id: "bloco9",
+    title: "Encerramento",
+    questions: [
+      {
+        id: "Q27",
+        variable: "comentario_final",
+        type: "textarea",
+        text: "Se quiser deixar algum comentário sobre esta pesquisa ou sobre o tema, use o espaço abaixo.",
+        hint: "Opcional.",
+        required: false,
+      },
+    ],
+  },
+];
+
+// Utilitário: retorna todas as perguntas em ordem plana (para validação/export/depuração).
+function getAllQuestions() {
+  return BLOCKS.flatMap((b) => b.questions);
+}

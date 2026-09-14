@@ -1,0 +1,259 @@
+/* style.css — tipografia limpa, hierarquia clara, baixa carga visual.
+   Princípios: progressive disclosure (um bloco por vez), consistência,
+   reconhecimento em vez de lembrança, prevenção de erros (validação com
+   mensagem clara, não apenas bloqueio silencioso). */
+
+:root {
+  --color-bg: #ffffff;
+  --color-text: #1c1c1c;
+  --color-muted: #5a5a5a;
+  --color-accent: #2f5d50;
+  --color-accent-light: #e8efec;
+  --color-border: #d8d8d8;
+  --color-error: #b3261e;
+  --radius: 6px;
+  --max-width: 620px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+#app {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 28px 20px 60px 20px;
+}
+
+.progress-wrap {
+  margin-bottom: 24px;
+}
+
+.progress-label {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--color-accent);
+  transition: width 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-fill {
+    transition: none;
+  }
+}
+
+.block-title {
+  font-size: 1.35rem;
+  margin: 0 0 16px 0;
+  line-height: 1.3;
+}
+
+.intro-box p {
+  margin: 0 0 12px 0;
+  color: var(--color-text);
+}
+
+.question {
+  border: none;
+  padding: 0;
+  margin: 0 0 28px 0;
+}
+
+.question-text {
+  font-size: 1.02rem;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.hint {
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  margin: 0 0 10px 0;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.98rem;
+  min-height: 44px;
+}
+
+.option-label:hover {
+  border-color: var(--color-accent);
+}
+
+.option-label input {
+  margin-top: 3px;
+  min-width: 18px;
+  min-height: 18px;
+  cursor: pointer;
+}
+
+.consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.consent-label input {
+  margin-top: 3px;
+  min-width: 18px;
+  min-height: 18px;
+}
+
+.field-text,
+.field-textarea,
+.field-other {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--color-text);
+}
+
+.field-textarea {
+  resize: vertical;
+}
+
+.other-wrap {
+  margin-top: 8px;
+}
+
+.error-text {
+  color: var(--color-error);
+  font-size: 0.88rem;
+  margin-top: 8px;
+}
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 12px 22px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  background: #b7c6c2;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  border-color: var(--color-accent-light);
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  text-decoration: underline;
+  padding: 8px 0;
+}
+
+.btn-danger {
+  color: var(--color-error);
+}
+
+.confirmation h1 {
+  font-size: 1.4rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.debug-toolbar {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 8px 20px;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+#debug-panel {
+  max-width: var(--max-width);
+  margin: 0 auto 20px auto;
+  padding: 12px 20px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  background: #f7f7f5;
+  border-bottom: 1px solid var(--color-border);
+  max-height: 260px;
+  overflow: auto;
+}
+
+@media (max-width: 480px) {
+  #app {
+    padding: 20px 14px 48px 14px;
+  }
+  .block-title {
+    font-size: 1.2rem;
+  }
+}
