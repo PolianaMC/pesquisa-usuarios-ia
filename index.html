@@ -3,24 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pesquisa exploratória — uso de ferramentas de IA (teste interno)</title>
+<title>Pesquisa exploratória — uso de ferramentas de IA</title>
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
 <!--
-  IMPLEMENTAÇÃO DE TESTE INTERNO — NÃO É COLETA REAL.
-  Este arquivo não deve ser publicado/divulgado como link de coleta.
-  Ver 08_IMPLEMENTACAO/README_IMPLEMENTACAO.md.
+  O modo de funcionamento é definido por APP_MODE em js/app.js.
+  Quando APP_MODE = "dev", NADA é enviado a servidor: as
+  respostas ficam só neste navegador, e as ferramentas de teste (modo
+  depuração, "(teste interno)" no título, exportação local) são criadas pelo
+  próprio app.js. Não divulgar como link de coleta antes da troca explícita
+  para "public".
 -->
-
-<div class="debug-toolbar">
-  <label>
-    <input type="checkbox" id="debug-toggle" />
-    Modo depuração (mostra o estado interno das respostas — apenas nesta sessão, não é enviado a lugar nenhum)
-  </label>
-</div>
-<pre id="debug-panel" hidden></pre>
 
 <main id="app" role="main"></main>
 

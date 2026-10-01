@@ -13,7 +13,7 @@ const CONSENT_INTRO = `Estamos realizando uma pesquisa acadêmica para compreend
 
 Não existem respostas certas ou erradas — queremos entender sua experiência real de uso.
 
-A participação é voluntária, leva cerca de 10 minutos, e você pode parar a qualquer momento sem nenhuma consequência. Não pedimos nome, e-mail ou qualquer dado que possa te identificar. Suas respostas são anônimas e serão usadas apenas para fins acadêmicas, em um Projeto de Conclusão de Curso em Design.
+A participação é voluntária, leva cerca de 10 minutos, e você pode parar a qualquer momento sem nenhuma consequência. Não pedimos nome, e-mail ou qualquer dado que possa te identificar. Suas respostas são anônimas e serão usadas apenas para fins acadêmicos, em um Projeto de Conclusão de Curso em Design.
 
 É necessário ter 18 anos ou mais e já ter utilizado alguma ferramenta de IA generativa para participar.`;
 
@@ -399,6 +399,7 @@ const BLOCKS = [
         variable: "caracteristica_facilitadora_espontanea",
         type: "textarea",
         text: "Pense em uma resposta de IA que você considerou fácil de entender rapidamente. O que fez ela ser fácil?",
+        hint: "Opcional.",
         required: false,
       },
       {
